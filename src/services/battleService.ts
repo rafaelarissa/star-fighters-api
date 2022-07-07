@@ -72,3 +72,21 @@ async function getBattleResult(
   await updateDrawStats(firstFighter.id, secondFighter.id);
   return { winner: null, loser: null, draw: true };
 }
+
+export async function battle(firstUser: string, secondUser: string) {
+  const firstUserRepos = await getFighterRepos(firstUser);
+  const secondUserRepos = await getFighterRepos(secondUser);
+
+  const firstFighter = await getFighter(firstUser);
+  const secondFighter = await getFighter(secondUser);
+
+  const firstUserStarCount = getFighterStarCount(firstUserRepos);
+  const secondUserStarCount = getFighterStarCount(secondUserRepos);
+
+  return getBattleResult(
+    firstFighter,
+    secondFighter,
+    firstUserStarCount,
+    secondUserStarCount
+  );
+}
