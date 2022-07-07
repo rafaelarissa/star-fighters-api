@@ -33,3 +33,17 @@ export async function insert(username: string) {
 
   return result.rows[0];
 }
+
+export async function updateStats(
+  id: number,
+  column: "wins" | "losses" | "draws"
+) {
+  connection.query(
+    `
+    UPDATE fighters 
+     SET ${column}=${column}+1
+    WHERE id=$1
+  `,
+    [id]
+  );
+}
