@@ -35,3 +35,11 @@ async function updateWinnerAndLoserStats(winnerId: number, loserId: number) {
   await fighterRepository.updateStats(winnerId, "wins");
   await fighterRepository.updateStats(loserId, "losses");
 }
+
+async function updateDrawStats(
+  firstFighterId: number,
+  secondFighterId: number
+) {
+  await fighterRepository.updateStats(firstFighterId, "draws");
+  await fighterRepository.updateStats(secondFighterId, "draws");
+}
