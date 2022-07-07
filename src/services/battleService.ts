@@ -43,3 +43,32 @@ async function updateDrawStats(
   await fighterRepository.updateStats(firstFighterId, "draws");
   await fighterRepository.updateStats(secondFighterId, "draws");
 }
+
+async function getBattleResult(
+  firstFighter: any,
+  secondFighter: any,
+  firstUserStarCount: number,
+  secondUserStarCount: number
+) {
+  if (firstUserStarCount > secondUserStarCount) {
+    await updateWinnerAndLoserStats(firstFighter.id, secondFighter.id);
+
+    return {
+      winner: firstFighter.username,
+      loser: secondFighter.username,
+      draw: false,
+    };
+  }
+
+  if (secondUserStarCount < firstUserStarCount) {
+    await updateWinnerAndLoserStats(secondFighter.id, firstFighter.id);
+    return {
+      winner: secondFighter.username,
+      loser: firstFighter.username,
+      draw: false,
+    };
+  }
+
+  await updateDrawStats(firstFighter.id, secondFighter.id);
+  return { winner: null, loser: null, draw: true };
+}
