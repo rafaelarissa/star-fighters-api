@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as fighterRepository from "../repositories/fighterRepository.js";
 
-export async function getFighterRepos(username: string) {
+async function getFighterRepos(username: string) {
   const { data } = await axios.get(
     `https://api.github.com/users/${username}/repos`
   );
@@ -22,4 +22,16 @@ async function getFighter(username: string) {
   }
 
   return fighter;
+}
+
+function getFighterStarCount(fighterRepos: any[]) {
+  const repoStars = fighterRepos.map((repo) => repo.stargazers_count);
+  if (repoStars.length === 0) return 0;
+
+  return repoStars.reduce((current: number, sum: number) => sum + current);
+}
+
+async function updateWinnerAndLoserStats(winnerId: number, loserId: number) {
+  await fighterRepository.updateStats(winnerId, "wins");
+  await fighterRepository.updateStats(loserId, "losses");
 }
